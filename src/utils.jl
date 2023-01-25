@@ -512,6 +512,17 @@ function isregular(timestamps::AbstractVector{V}, unit::T) where {V<:TimeType, T
     return (timestamps[1]:unit:timestamps[s])==timestamps
 end
 
+function isregular(timestamps, unit::Symbol)
+    s = size(timestamps, 1)
+
+    if s == 1 || unit != :firstdiff
+        return false
+    end
+
+    dt = diff(timestamps)
+    return all(dt.==dt[1])
+end
+
 #find number of units between start and end date
 function gettimeperiod(startdate, enddate, unit)
     try

@@ -74,3 +74,7 @@ function upsample(ts::TSFrame, period::T) where {T<:Union{DatePeriod, TimePeriod
     dex = collect(first(index(ts)):period:last(index(ts)))
     join(ts, TSFrame(DataFrame(index = dex), :index))
 end
+
+function upsample(ts::TSFrame, period::T, func) where {T<:Union{DatePeriod, TimePeriod}}
+    func(upsample(ts,period))
+end
